@@ -20,10 +20,6 @@ public class JoueurServiceImpl implements JoueurService {
 
     @Override
     public Joueur saveJoueur(Joueur j) {
-        if (j.getEquipe() != null && j.getEquipe().getIdEquipe() != null) {
-            Equipe equipe = equipeRepository.findById(j.getEquipe().getIdEquipe()).orElse(null);
-            j.setEquipe(equipe);
-        }
         return joueurRepository.save(j);
     }
 

@@ -3,6 +3,7 @@ package com.salma.joueur1.restcontrollers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,31 +22,32 @@ public class JoueurRESTController {
     JoueurService joueurService;
 
     // 1. Retourner tous les joueurs
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(path ="all" ,method = RequestMethod.GET)
     public List<Joueur> getAllJoueurs() {
         return joueurService.getAllJoueurs();
     }
 
     // 2. Consulter un joueur par son ID
-    @RequestMapping(value="/{id}", method = RequestMethod.GET)
+    @RequestMapping(value="/getbyid/{id}", method = RequestMethod.GET)
     public Joueur getJoueurById(@PathVariable("id") Long id) {
         return joueurService.getJoueur(id);
     }
 
     // 3. Créer un nouveau joueur
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(path = "/addjoueur", method = RequestMethod.POST)
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Joueur createJoueur(@RequestBody Joueur joueur) {
         return joueurService.saveJoueur(joueur);
     }
 
     // 4. Modifier un joueur
-    @RequestMapping(method = RequestMethod.PUT)
+    @RequestMapping(path = "/updatejoueur", method = RequestMethod.PUT)
     public Joueur updateJoueur(@RequestBody Joueur joueur) {
         return joueurService.updateJoueur(joueur);
     }
 
     // 5. Supprimer un joueur
-    @RequestMapping(value="/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value="/deljoueur/{id}", method = RequestMethod.DELETE)
     public void deleteJoueur(@PathVariable("id") Long id) {
         joueurService.deleteJoueurById(id);
     }
